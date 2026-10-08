@@ -1,0 +1,395 @@
+/* ============================================================
+   스터디룸 예약서 — style.css
+   색상 팔레트
+     네이비 블루  : #1E3A8A
+     스카이블루   : #E0F2FE
+     포인트 갈색  : #92400E  (포커스 테두리 / 금액 강조)
+     청록 배경    : #CCFBF1  (확인 메시지 배경)
+     초록 글씨    : #065F46  (확인 메시지 텍스트)
+     화이트       : #FFFFFF
+     연한 회색    : #F1F5F9  (배경)
+     오류 빨강    : #B91C1C
+============================================================ */
+
+/* ── 전역 기본값 ── */
+*,
+*::before,
+*::after {
+  /* 박스 크기 계산 기준을 border-box로 통일 */
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+body {
+  /* 폰트: 맑은 고딕 우선, 없으면 시스템 sans-serif */
+  font-family: 'Malgun Gothic', '맑은 고딕', sans-serif;
+  font-size: 15px;
+  line-height: 1.6;
+  color: #1E3A8A;          /* 기본 글씨색: 네이비 블루 */
+  background-color: #F1F5F9; /* 전체 배경: 연한 회색 */
+  /* 세로 스크롤이 짧을 때도 배경이 끊기지 않게 */
+  min-height: 100vh;
+  padding: 24px 16px 48px; /* 모바일 여백 확보 */
+}
+
+/* ── hidden 유틸리티 ──
+   [hidden] HTML 속성 또는 .hidden JS 클래스 모두 처리 */
+[hidden],
+.hidden {
+  display: none !important;
+}
+
+/* ============================================================
+   헤더 영역
+============================================================ */
+header {
+  text-align: center;
+  margin-bottom: 28px;
+}
+
+/* 로고 이모지 */
+.logo {
+  font-size: 64px;           /* 크게 표시 */
+  line-height: 1.1;
+  margin-bottom: 8px;
+  /* 이모지에 부드러운 드롭 쉐도우 */
+  filter: drop-shadow(0 4px 8px rgba(30, 58, 138, 0.18));
+}
+
+/* 카페 이름 제목 */
+.site-name {
+  font-size: 28px;
+  font-weight: 700;
+  color: #1E3A8A;            /* 네이비 블루 */
+  letter-spacing: -0.5px;
+  margin-bottom: 6px;
+}
+
+/* 부제 */
+.site-subtitle {
+  font-size: 14px;
+  color: #4B6CB7;            /* 중간 톤 블루 */
+}
+
+/* ============================================================
+   메인 컨테이너 — 최대 너비 520px, 가운데 정렬
+============================================================ */
+main {
+  max-width: 520px;
+  margin: 0 auto;            /* 수평 가운데 정렬 */
+  background-color: #FFFFFF;
+  border-radius: 16px;       /* 둥근 모서리 */
+  box-shadow: 0 4px 24px rgba(30, 58, 138, 0.12); /* 부드러운 네이비 그림자 */
+  padding: 32px 28px;
+}
+
+/* ============================================================
+   폼 전체 — 예약서
+============================================================ */
+#reservation-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;                 /* 항목 간 세로 간격 */
+}
+
+/* ── 폼 그룹 (각 항목 래퍼) ── */
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+/* ── 라벨 ── */
+.form-group > label,
+fieldset legend {
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E3A8A;            /* 네이비 블루 */
+}
+
+/* 필수 표시 별표 */
+.required {
+  color: #B91C1C;            /* 빨강 */
+  margin-left: 2px;
+}
+
+/* ── 텍스트 / 전화번호 / 숫자 입력칸 ── */
+input[type="text"],
+input[type="tel"],
+input[type="number"],
+select,
+textarea {
+  width: 100%;               /* 너비 100% */
+  padding: 10px 12px;        /* 내부 여백 */
+  border: 1.5px solid #BFDBFE; /* 연한 파랑 테두리 */
+  border-radius: 8px;        /* 둥근 모서리 */
+  font-family: inherit;
+  font-size: 15px;
+  color: #1E293B;
+  background-color: #F8FAFC;
+  outline: none;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* 플레이스홀더 색상 */
+input::placeholder,
+textarea::placeholder {
+  color: #94A3B8;
+}
+
+/* ── 포커스 효과 — 갈색 테두리 + 연한 남색 그림자 ── */
+input[type="text"]:focus,
+input[type="tel"]:focus,
+input[type="number"]:focus,
+select:focus,
+textarea:focus {
+  border-color: #92400E;                        /* 갈색 테두리 */
+  box-shadow: 0 0 0 3px rgba(146, 64, 14, 0.15); /* 연한 갈색/남색 그림자 */
+  background-color: #FFFFFF;
+}
+
+/* ── 드롭다운(select) 화살표 커스텀 ── */
+select {
+  /* 브라우저 기본 화살표 제거 후 직접 그리기 */
+  appearance: none;
+  -webkit-appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%231E3A8A' stroke-width='1.8' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 36px;       /* 화살표 공간 확보 */
+  cursor: pointer;
+}
+
+/* ── 텍스트 영역 ── */
+textarea {
+  resize: vertical;          /* 세로 방향으로만 크기 조절 허용 */
+  min-height: 80px;
+}
+
+/* ============================================================
+   fieldset / legend — 라디오·체크박스 그룹
+============================================================ */
+fieldset {
+  border: 1.5px solid #BFDBFE; /* 연한 파랑 테두리 */
+  border-radius: 8px;
+  padding: 14px 16px;
+}
+
+fieldset legend {
+  padding: 0 6px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1E3A8A;
+}
+
+/* ── 라디오 / 체크박스 아이템 — 가로 배치 ── */
+.radio-item,
+.checkbox-item {
+  display: inline-flex;      /* 가로 나란히 배치 */
+  align-items: center;
+  gap: 6px;                  /* 체크박스/라디오와 라벨 사이 간격 */
+}
+
+/* 라디오 / 체크박스 목록 전체를 flex로 묶어 wrap 처리 */
+fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+fieldset > div {
+  display: flex;
+  flex-wrap: wrap;           /* 모바일에서 자동 줄바꿈 */
+  gap: 8px 16px;             /* 세로 8px, 가로 16px 간격 */
+}
+
+/* legend는 flex 자식에서 제외 */
+fieldset legend {
+  display: block;
+  width: 100%;
+  margin-bottom: 8px;
+}
+
+/* 라디오 / 체크박스 크기 */
+input[type="radio"],
+input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  accent-color: #1E3A8A;     /* 선택 시 네이비 블루 색상 */
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+/* 라디오 / 체크박스 라벨 */
+.radio-item label,
+.checkbox-item label {
+  font-size: 14px;
+  color: #334155;
+  cursor: pointer;
+  white-space: nowrap;       /* 줄바꿈 방지 */
+}
+
+/* ── 인원수 입력칸 — 너비를 좁게 ── */
+#people-count {
+  width: 100px;              /* 숫자 입력은 좁게 */
+}
+
+/* ============================================================
+   오류 메시지 — 인원 초과 등
+============================================================ */
+.error-message {
+  font-size: 13px;
+  color: #B91C1C;            /* 오류 빨강 */
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+/* ============================================================
+   예상 금액 표시 영역
+============================================================ */
+.estimated-price-area {
+  text-align: center;
+  padding: 16px;
+  background-color: #EFF6FF; /* 아주 연한 파랑 */
+  border-radius: 10px;
+  border: 1.5px dashed #93C5FD;
+}
+
+/* 예상 금액 텍스트 */
+#estimated-price {
+  font-size: 24px;           /* 큰 글씨 */
+  font-weight: 700;          /* 굵게 */
+  color: #92400E;            /* 갈색 강조 */
+  text-align: center;
+}
+
+/* ============================================================
+   버튼 그룹
+============================================================ */
+.button-group {
+  display: flex;
+  gap: 12px;
+}
+
+/* ── 공통 버튼 기본 스타일 ── */
+.button-group button {
+  flex: 1;                   /* 두 버튼이 동일 너비로 채움 */
+  padding: 12px;
+  font-family: inherit;
+  font-size: 15px;
+  font-weight: 600;
+  border-radius: 8px;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.2s, transform 0.1s, box-shadow 0.2s;
+}
+
+/* ── 9. 예약하기 버튼 — 스카이블루 배경, 네이비 글씨 ── */
+#btn-reserve {
+  background-color: #E0F2FE; /* 스카이블루 */
+  color: #1E3A8A;            /* 네이비 블루 글씨 */
+  box-shadow: 0 2px 8px rgba(30, 58, 138, 0.15);
+}
+
+/* hover 시 약간 밝게 + 살짝 위로 */
+#btn-reserve:hover {
+  background-color: #BAE6FD; /* 더 밝은 스카이블루 */
+  box-shadow: 0 4px 12px rgba(30, 58, 138, 0.22);
+  transform: translateY(-1px);
+}
+
+#btn-reserve:active {
+  transform: translateY(0);
+  box-shadow: 0 2px 6px rgba(30, 58, 138, 0.15);
+}
+
+/* ── 10. 다시 작성 버튼 — 흰 배경 + 남색 테두리 ── */
+#btn-reset {
+  background-color: #FFFFFF; /* 흰 배경 */
+  color: #1E3A8A;            /* 네이비 블루 글씨 */
+  border: 1.5px solid #1E3A8A; /* 남색 테두리 */
+}
+
+#btn-reset:hover {
+  background-color: #EFF6FF; /* hover 시 연한 파랑 */
+  transform: translateY(-1px);
+}
+
+#btn-reset:active {
+  transform: translateY(0);
+}
+
+/* ============================================================
+   11. 예약 확인 메시지 영역
+   — JavaScript가 hidden 속성을 제거하면 나타남
+============================================================ */
+#reservation-confirmation {
+  margin-top: 24px;
+  padding: 20px 24px;
+  background-color: #CCFBF1; /* 청록색 배경 */
+  border: 1.5px solid #6EE7B7;
+  border-radius: 12px;       /* 둥근 모서리 */
+  color: #065F46;            /* 진한 초록 글씨 */
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+/* 확인 메시지 내부 제목 */
+#reservation-confirmation h2 {
+  font-size: 18px;
+  font-weight: 700;
+  color: #047857;
+  margin-bottom: 12px;
+}
+
+/* 확인 메시지 내부 목록 */
+#reservation-confirmation ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+#reservation-confirmation li::before {
+  content: '✅ ';
+}
+
+/* ============================================================
+   반응형 — 모바일 (480px 이하)
+============================================================ */
+@media (max-width: 480px) {
+  body {
+    padding: 16px 10px 40px;
+  }
+
+  main {
+    padding: 24px 16px;
+    border-radius: 12px;
+  }
+
+  .logo {
+    font-size: 52px;
+  }
+
+  .site-name {
+    font-size: 24px;
+  }
+
+  /* 버튼을 세로로 쌓기 */
+  .button-group {
+    flex-direction: column;
+  }
+
+  /* 예상 금액 글씨 크기 살짝 줄임 */
+  #estimated-price {
+    font-size: 20px;
+  }
+
+  /* 라디오·체크박스 wrap이 잘 되도록 간격 조정 */
+  fieldset > div {
+    gap: 6px 12px;
+  }
+}
+

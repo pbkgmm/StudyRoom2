@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>스터디룸 예약서</title>
+
+  <!-- 외부 스타일시트 연결 -->
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+
+  <!-- ============================
+       페이지 상단 헤더 영역
+  ============================ -->
+  <header>
+    <!-- 로고 이모지 -->
+    <div class="logo">📚</div>
+
+    <!-- 서비스 이름 -->
+    <h1 class="site-name">스터디룸</h1>
+
+    <!-- 부제 -->
+    <p class="site-subtitle">공부에 편안함을 더하다</p>
+  </header>
+
+  <!-- ============================
+       예약서 메인 영역
+  ============================ -->
+  <main>
+
+    <!--
+      novalidate: 브라우저 기본 유효성 검사를 끄고
+      JavaScript가 직접 검사를 처리하도록 설정
+    -->
+    <form id="reservation-form" novalidate>
+
+      <!-- ── 1. 이름 (필수) ── -->
+      <div class="form-group">
+        <label for="customer-name">이름 <span class="required">*</span></label>
+        <input
+          type="text"
+          id="customer-name"
+          name="customerName"
+          placeholder="이름을 입력하세요"
+          autocomplete="name"
+        />
+      </div>
+
+      <!-- ── 2. 전화번호 ── -->
+      <div class="form-group">
+        <label for="customer-tel">전화번호</label>
+        <input
+          type="tel"
+          id="customer-tel"
+          name="customerTel"
+          placeholder="010-0000-0000"
+          autocomplete="tel"
+        />
+      </div>
+
+      <!-- ── 3. 스터디룸 선택 (드롭다운) ── -->
+      <!--
+        data-price  : 해당 방의 시간당 기본 가격 (원 단위)
+        data-max    : 해당 방의 최대 수용 인원 (JavaScript 인원 초과 검사에 사용)
+        data-min    : 해당 방의 최소 인원 (대형 세미나실은 5명부터)
+      -->
+      <div class="form-group">
+        <label for="room-select">스터디룸 선택</label>
+        <select id="room-select" name="room">
+          <!-- 기본 안내 항목 -->
+          <option value="" data-price="0" data-min="1" data-max="0">-- 방을 선택하세요 --</option>
+
+          <!-- 개인실: 1인 전용 -->
+          <option value="private"   data-price="8000"  data-min="1" data-max="1">개인실 8,000원</option>
+
+          <!-- 2인실: 최대 2명 -->
+          <option value="room-2"    data-price="10000" data-min="1" data-max="2">2인실 10,000원</option>
+
+          <!-- 3인실: 최대 3명 -->
+          <option value="room-3"    data-price="12000" data-min="1" data-max="3">3인실 12,000원</option>
+
+          <!-- 4인실: 최대 4명 -->
+          <option value="room-4"    data-price="14000" data-min="1" data-max="4">4인실 14,000원</option>
+
+          <!-- 대형 세미나실: 5 ~ 12명 -->
+          <option value="seminar"   data-price="18000" data-min="5" data-max="12">대형 세미나실 18,000원</option>
+        </select>
+      </div>
+
+      <!-- ── 4. 이용 시간 (라디오 버튼) ── -->
+      <!--
+        data-hours  : 이용 시간(시간 단위) — JavaScript가 [방 가격 × data-hours] 로 계산
+        실제 금액은 방 선택에 따라 달라지므로 data-price는 쓰지 않고
+        data-hours만 사용. 라벨 안 괄호 안 금액은 JavaScript가 동적으로 채움.
+      -->
+      <div class="form-group">
+        <fieldset>
+          <legend>이용 시간</legend>
+
+          <!-- 1시간 -->
+          <div class="radio-item">
+            <input
+              type="radio"
+              id="time-1"
+              name="useTime"
+              value="1"
+              data-hours="1"
+              checked
+            />
+            <label for="time-1">1시간</label>
+          </div>
+
+          <!-- 2시간 -->
+          <div class="radio-item">
+            <input
+              type="radio"
+              id="time-2"
+              name="useTime"
+              value="2"
+              data-hours="2"
+            />
+            <label for="time-2">2시간</label>
+          </div>
+
+          <!-- 3시간 -->
+          <div class="radio-item">
+            <input
+              type="radio"
+              id="time-3"
+              name="useTime"
+              value="3"
+              data-hours="3"
+            />
+            <label for="time-3">3시간</label>
+          </div>
+
+          <!-- 4시간 -->
+          <div class="radio-item">
+            <input
+              type="radio"
+              id="time-4"
+              name="useTime"
+              value="4"
+              data-hours="4"
+            />
+            <label for="time-4">4시간</label>
+          </div>
+
+          <!-- 5시간 -->
+          <div class="radio-item">
+            <input
+              type="radio"
+              id="time-5"
+              name="useTime"
+              value="5"
+              data-hours="5"
+            />
+            <label for="time-5">5시간</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- ── 5. 대여 장비 (체크박스) ── -->
+      <!--
+        data-price: 장비별 추가 금액 (원 단위)
+      -->
+      <div class="form-group">
+        <fieldset>
+          <legend>대여 장비</legend>
+
+          <!-- 빔 프로젝터: +1,000원 -->
+          <div class="checkbox-item">
+            <input
+              type="checkbox"
+              id="equip-projector"
+              name="equipment"
+              value="projector"
+              data-price="1000"
+            />
+            <label for="equip-projector">빔 프로젝터 &nbsp;+1,000원</label>
+          </div>
+
+          <!-- 화이트보드 및 보드마커: +1,000원 -->
+          <div class="checkbox-item">
+            <input
+              type="checkbox"
+              id="equip-whiteboard"
+              name="equipment"
+              value="whiteboard"
+              data-price="1000"
+            />
+            <label for="equip-whiteboard">화이트보드 및 보드마커 &nbsp;+1,000원</label>
+          </div>
+
+          <!-- 충전기: +500원 -->
+          <div class="checkbox-item">
+            <input
+              type="checkbox"
+              id="equip-charger"
+              name="equipment"
+              value="charger"
+              data-price="500"
+            />
+            <label for="equip-charger">충전기 &nbsp;+500원</label>
+          </div>
+
+          <!-- 이어폰: +300원 -->
+          <div class="checkbox-item">
+            <input
+              type="checkbox"
+              id="equip-earphone"
+              name="equipment"
+              value="earphone"
+              data-price="300"
+            />
+            <label for="equip-earphone">이어폰 &nbsp;+300원</label>
+          </div>
+        </fieldset>
+      </div>
+
+      <!-- ── 6. 인원수 (number) ── -->
+      <!--
+        min="1" max="12" : 전체 허용 범위
+        실제 초과 여부는 JavaScript가 선택된 방의 data-max 값과 비교하여 검사
+        초과 시 오류 메시지 표시 후 예약 불가 처리
+      -->
+      <div class="form-group">
+        <label for="people-count">인원수</label>
+        <input
+          type="number"
+          id="people-count"
+          name="peopleCount"
+          min="1"
+          max="12"
+          value="1"
+        />
+        <!-- JavaScript가 인원 초과 시 이 영역에 오류 메시지를 표시 -->
+        <p id="people-error" class="error-message" hidden></p>
+      </div>
+
+      <!-- ── 7. 요청사항 (textarea) ── -->
+      <div class="form-group">
+        <label for="request">요청사항</label>
+        <textarea
+          id="request"
+          name="request"
+          rows="3"
+          placeholder="예) 조용한 자리 선호, 창가 자리 요청 등"
+        ></textarea>
+      </div>
+
+      <!-- ── 8. 예상 금액 표시 영역 ── -->
+      <!--
+        계산식: (방 시간당 가격 × 이용 시간) + 장비 합계
+        JavaScript가 id="estimated-price" 요소의 텍스트를 실시간으로 업데이트
+      -->
+      <div class="form-group estimated-price-area">
+        <p id="estimated-price">예상 금액: 0원</p>
+      </div>
+
+      <!-- ── 9 & 10. 예약하기 / 다시 작성 버튼 ── -->
+      <div class="button-group">
+        <button type="submit" id="btn-reserve">예약하기</button>
+        <button type="reset"  id="btn-reset">다시 작성</button>
+      </div>
+
+    </form><!-- /#reservation-form -->
+
+    <!-- ── 11. 예약 확인 메시지 영역 ──
+         처음에는 숨김 처리 (hidden 속성).
+         JavaScript가 예약 완료 후 이 영역을 표시하고 내용을 채워 넣음.
+    -->
+    <section id="reservation-confirmation" hidden>
+      <!-- JavaScript가 동적으로 예약 내용을 채워 넣을 자리 -->
+    </section>
+
+  </main><!-- /main -->
+
+  <!-- Supabase JS v2 CDN — script.js보다 먼저 로드해야 supabase 전역 객체를 사용할 수 있음 -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+  <!-- 예약서 기능 스크립트 (defer: HTML 파싱 완료 후 실행) -->
+  <script src="script.js" defer></script>
+
+</body>
+</html>
+
